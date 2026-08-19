@@ -1,0 +1,61 @@
+DATA MODELS:
+
+        Data Model is way of organizing the data and representing the data, how to store data , how to manipulate the data into dbms.
+Types of data models
+1. Hierarchical data model: The organized data into a tree like structure (parent and child)
+   Every child contain only one parent.
+   Every parent can have multiple Childs.
+   In this model easy to retrieve and maintain the data.
+   In this model, it is not comfortable for maintain complex relationships.
+               Ex: institute-----course----students
+2. Network data model : The data is organized into nodes(entities) and edges(relationships) in that more one parent contain many childs.
+   one child can have many parents.
+   it flexible for compare to hierarchical model.
+             Ex: one student can take multiple courses.
+   Each course learn multiple students.
+3. Object Oriented data Model: All data represented at objects.
+   Every object can have 2 properties.
+4. Relational data model: The data is stored in a table columns(fields) and row(records)
+   Ex: student: sid, sname...etc
+
+DATA MODEL LEVELS:
+
+Conceptual Level
+Logical Level
+physical Level
+
+INTRODUCTION OF SQL:
+SQL stands for Structured Query Language.
+it is used to communicate with databases such as MySQL, oracle, PostgreSQL.
+using sql language:
+To create and delete structure in database.
+To insert, update, and delete data.
+Easy to retrieve the data into a database.
+To provide the control access.
+
+SQL language is divided into different categories:
+
+DDL:
+ DDL Stands for Data Definition Language, it used to create and manipulate the database. such as tables, views, databases and schema. 
+       1. Create
+       2. alter
+       3. drop
+       4. truncate
+       5. rename
+DML:
+ DML stands for Data Manipulation Language. It is used to add, update, and delete the data.
+       1. insert
+       2. update
+       3. delete
+TCL:
+ TCL stands for transaction control language. It is used to transactions.
+       1. commit
+       2. rollback
+       3. savepoint
+DQL:
+ DQL stands for data query language. It is used to retrieve the data.
+       1. select
+DCL:
+    DCL stands for data control language. it is used to provide control access for database.
+           1. grant
+           2. revoke

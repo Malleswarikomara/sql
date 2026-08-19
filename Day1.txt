@@ -1,0 +1,56 @@
+1. Data is collection of raw facts, figures, symbols
+
+2. it is meaning less and unprocessed
+
+3. processing the data is called information, example: stdid = 101;
+
+4. File Management System(FMS):
+ 
+previously the data is stored in files
+
+key functions of FMS:
+
+File create
+File open
+File delete
+File read
+share data
+to provide access.
+ 
+Drawbacks of FMS:
+
+data inconsistency
+less security
+data redundancy
+backup and recovery
+data manipulation
+
+Database:
+
+database is a tool it is used to store the data
+
+Management System:
+
+to manage data --> using retrieve, update, delete data
+
+DBMS: DataBase Management System:
+it is a software
+The main purpose of dbms is used to store data permently and manage data.
+Advantages of DBMS:
+reduce data redundancy
+to provide more security
+to improve data inconsistency
+possible to recover and backup the data
+to maintain readability
+Types of DBMS:
+NoSQL dbms: The data is stored into unstructured format.  Ex: MongoDB, postgre sql
+RDBMS: it stands for Relational database management system, in RDBMS the data is stored in rows and colums(table format),
+         the data is stored in the structured format.
+         EX: MySQL, oracle...etc
+3. MySQL: it is a database, the data is stored in the table format. it provides the relationships. it is easy to maintain the data and it is open source database, it is free of cost.
+
+field:
+    ex: studentid = 101
+record/row: collection of fields.
+    ex: studentid = 101, sname= 'klm', course='da';
+Table:  collection of records and fields.
