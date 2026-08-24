@@ -1,0 +1,96 @@
+mysql> CREATE TABLE employees (
+    ->     emp_id INT,
+    ->     first_name VARCHAR(50),
+    ->     last_name VARCHAR(50),
+    ->     department VARCHAR(50),
+    ->     salary DECIMAL(10,2),
+    ->     bonus DECIMAL(10,2),
+    ->     commission DECIMAL(10,2)
+    -> );
+
+
+ INSERT INTO employees
+    -> (emp_id, first_name, last_name, department, salary, bonus, commission)
+    -> VALUES
+    -> (101, 'John', 'Smith', 'IT', 48500.00, 2500.00, 1200.00),
+    -> (102, 'Sarah', 'Johnson', 'HR', 52750.00, 3000.00, 800.00),
+    -> (103, 'Michael', 'Brown', 'Sales', 61250.00, 4500.00, 3500.00),
+    -> (104, 'David', 'Wilson', 'IT', 73499.00, 5000.00, 2100.00),
+    -> (105, 'Emma', 'Davis', 'Finance', 45680.00, 2200.00, 1500.00),
+    -> (106, 'Robert', 'Miller', 'Sales', 58990.00, 3500.00, 4200.00),
+    -> (107, 'Olivia', 'Taylor', 'HR', 51025.00, 2800.00, 900.00),
+    -> (108, 'Daniel', 'Anderson', 'IT', 67555.00, 4200.00, 1800.00),
+    -> (109, 'Sophia', 'Thomas', 'Finance', 49875.00, 2500.00, 1300.00),
+    -> (110, 'James', 'Jackson', 'Sales', 80500.00, 6000.00, 5500.00),
+    -> (111, 'Emily', 'White', 'IT', 92549.00, 7500.00, 3200.00),
+    -> (112, 'William', 'Harris', 'Finance', 55999.00, 3100.00, 1700.00),
+    -> (113, 'Ava', 'Martin', 'HR', 47250.00, 2400.00, 700.00),
+    -> (114, 'Christopher', 'Thompson', 'Sales', 68765.00, 4000.00, 3900.00),
+    -> (115, 'Isabella', 'Garcia', 'IT', 75999.00, 5200.00, 2500.00);
+
+
+
+select * from employees;
+
+SELECT first_name, ROUND(salary, -3) AS rounded_salary FROM employees;
+
+SELECT first_name, ROUND(salary, 2) AS rounded_salary FROM employees;
+
+ select first_name,ceil(salary) as greater from employees;
+
+select first_name, floor(salary) as below from employees;
+
+select first_name, salary*salary as itself from employees;
+
+select first_name,sqrt(salary) as itself from employees;
+
+select first_name,abs(salary - 60000) as absolute from employees;
+
+ select first_name,mod(salary,1000)as divided from employees;
+
+select first_name, rand(emp_id) as emo from employees;
+
+select first_name, sign(salary) as ems from employees;
+
+select first_name,greatest(salary, bonus, commission) as highest from employees;
+
+select first_name,least(salary, bonus, commission) as highest from employees;
+
+ select first_name,upper(first_name) as name from employees;
+
+ select first_name,lower(first_name) as name from employees;
+
+select first_name,char_length(first_name) as name from employees;
+
+SELECT CONCAT_WS(' ', first_name, last_name) AS full_name,
+LENGTH(CONCAT_WS(' ', first_name, last_name)) AS name_length FROM employees;
+
+ select first_name,left(first_name,3) as emp from employees;
+
+select last_name,right(last_name,3) as emp from employees;
+
+select first_name,left(first_name,4) as emp from employees;
+
+select first_name,concat( first_name,last_name) as mps from employees;
+
+select first_name,concat_ws('-', first_name,last_name,department) as mps from employees;
+
+select replace(first_name,'a','@') from employees;
+
+select trim(first_name) from employees;
+
+select first_name,lpad(first_name,10,'*') as mmp from employees;
+
+select first_name,rpad(first_name,10,'*') as mmp from employees;
+
+
+select first_name, locate('a',first_name) as emp from employees;
+
+select first_name from employees where first_name like '%an%';
+
+select last_name,locate('son',last_name) as position from employees;
+
+ select first_name from employees where length (first_name) > 5;
+
+
+
