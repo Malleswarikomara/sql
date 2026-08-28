@@ -1,0 +1,370 @@
+Microsoft Windows [Version 10.0.26200.9168]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\DELL>mysql -u root -p
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use companyDB;
+Database changed
+mysql> show tables;
++---------------------+
+| Tables_in_companydb |
++---------------------+
+| department          |
+| employee            |
++---------------------+
+2 rows in set (0.08 sec)
+
+mysql> select e.emp_name, d.dept_name from employee e cross join department d;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| Rahul    | Testing   |
+| Rahul    | Support   |
+| Rahul    | Marketing |
+| Rahul    | Sales     |
+| Rahul    | Finance   |
+| Rahul    | IT        |
+| Rahul    | HR        |
+| Sneha    | Testing   |
+| Sneha    | Support   |
+| Sneha    | Marketing |
+| Sneha    | Sales     |
+| Sneha    | Finance   |
+| Sneha    | IT        |
+| Sneha    | HR        |
+| Kiran    | Testing   |
+| Kiran    | Support   |
+| Kiran    | Marketing |
+| Kiran    | Sales     |
+| Kiran    | Finance   |
+| Kiran    | IT        |
+| Kiran    | HR        |
+| Anjali   | Testing   |
+| Anjali   | Support   |
+| Anjali   | Marketing |
+| Anjali   | Sales     |
+| Anjali   | Finance   |
+| Anjali   | IT        |
+| Anjali   | HR        |
+| Amit     | Testing   |
+| Amit     | Support   |
+| Amit     | Marketing |
+| Amit     | Sales     |
+| Amit     | Finance   |
+| Amit     | IT        |
+| Amit     | HR        |
+| Priya    | Testing   |
+| Priya    | Support   |
+| Priya    | Marketing |
+| Priya    | Sales     |
+| Priya    | Finance   |
+| Priya    | IT        |
+| Priya    | HR        |
+| Ravi     | Testing   |
+| Ravi     | Support   |
+| Ravi     | Marketing |
+| Ravi     | Sales     |
+| Ravi     | Finance   |
+| Ravi     | IT        |
+| Ravi     | HR        |
+| Meena    | Testing   |
+| Meena    | Support   |
+| Meena    | Marketing |
+| Meena    | Sales     |
+| Meena    | Finance   |
+| Meena    | IT        |
+| Meena    | HR        |
+| Suresh   | Testing   |
+| Suresh   | Support   |
+| Suresh   | Marketing |
+| Suresh   | Sales     |
+| Suresh   | Finance   |
+| Suresh   | IT        |
+| Suresh   | HR        |
+| Divya    | Testing   |
+| Divya    | Support   |
+| Divya    | Marketing |
+| Divya    | Sales     |
+| Divya    | Finance   |
+| Divya    | IT        |
+| Divya    | HR        |
+| Vikas    | Testing   |
+| Vikas    | Support   |
+| Vikas    | Marketing |
+| Vikas    | Sales     |
+| Vikas    | Finance   |
+| Vikas    | IT        |
+| Vikas    | HR        |
+| Pooja    | Testing   |
+| Pooja    | Support   |
+| Pooja    | Marketing |
+| Pooja    | Sales     |
+| Pooja    | Finance   |
+| Pooja    | IT        |
+| Pooja    | HR        |
++----------+-----------+
+84 rows in set (0.06 sec)
+
+mysql> select e.emp_name, d.dept_name from employee e natural join department d;
++----------+-----------+
+| emp_name | dept_name |
++----------+-----------+
+| Rahul    | IT        |
+| Sneha    | HR        |
+| Kiran    | IT        |
+| Anjali   | Finance   |
+| Amit     | IT        |
+| Priya    | Sales     |
+| Ravi     | Marketing |
+| Divya    | IT        |
+| Vikas    | Support   |
+| Pooja    | HR        |
++----------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> drop table employee;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> drop table department;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Department (
+    ->     dept_id INT PRIMARY KEY,
+    ->     dept_name VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO Department VALUES
+    -> (10,'HR'),
+    -> (20,'IT'),
+    -> (30,'Finance'),
+    -> (40,'Sales'),
+    -> (50,'Marketing');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Employee (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(30),
+    ->     salary DECIMAL(10,2),
+    ->     dept_id INT,
+    ->     experience INT,
+    ->     FOREIGN KEY(dept_id) REFERENCES Department(dept_id)
+    -> );
+Query OK, 0 rows affected (0.09 sec)
+
+mysql>
+mysql> INSERT INTO Employee VALUES
+    -> (101,'Rahul',50000,10,3),
+    -> (102,'Kiran',45000,10,2),
+    -> (103,'Anita',65000,20,5),
+    -> (104,'Priya',70000,20,6),
+    -> (105,'Sneha',80000,20,8),
+    -> (106,'Vijay',55000,30,4),
+    -> (107,'Ajay',60000,40,5),
+    -> (108,'Ravi',40000,30,1),
+    -> (109,'Meena',75000,40,7),
+    -> (110,'Arun',35000,30,1);
+Query OK, 10 rows affected (0.00 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    101 | Rahul    | 50000.00 |      10 |          3 |
+|    102 | Kiran    | 45000.00 |      10 |          2 |
+|    103 | Anita    | 65000.00 |      20 |          5 |
+|    104 | Priya    | 70000.00 |      20 |          6 |
+|    105 | Sneha    | 80000.00 |      20 |          8 |
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    107 | Ajay     | 60000.00 |      40 |          5 |
+|    108 | Ravi     | 40000.00 |      30 |          1 |
+|    109 | Meena    | 75000.00 |      40 |          7 |
+|    110 | Arun     | 35000.00 |      30 |          1 |
++--------+----------+----------+---------+------------+
+10 rows in set (0.04 sec)
+
+mysql> select * from department;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|      10 | HR        |
+|      20 | IT        |
+|      30 | Finance   |
+|      40 | Sales     |
+|      50 | Marketing |
++---------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee where salary > 50000;
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    103 | Anita    | 65000.00 |      20 |          5 |
+|    104 | Priya    | 70000.00 |      20 |          6 |
+|    105 | Sneha    | 80000.00 |      20 |          8 |
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    107 | Ajay     | 60000.00 |      40 |          5 |
+|    109 | Meena    | 75000.00 |      40 |          7 |
++--------+----------+----------+---------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from employee where salary > (select salary from employee where emp_name = 'Rahul';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from employee where salary > (select salary from employee where emp_name = 'Rahul');
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    103 | Anita    | 65000.00 |      20 |          5 |
+|    104 | Priya    | 70000.00 |      20 |          6 |
+|    105 | Sneha    | 80000.00 |      20 |          8 |
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    107 | Ajay     | 60000.00 |      40 |          5 |
+|    109 | Meena    | 75000.00 |      40 |          7 |
++--------+----------+----------+---------+------------+
+6 rows in set (0.04 sec)
+
+mysql> select * from employee where salary < select salary from employee where emp_name = 'priya');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select salary from employee where emp_name = 'priya')' at line 1
+mysql> select * from employee where salary < (select salary from employee where emp_name = 'priya');
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    101 | Rahul    | 50000.00 |      10 |          3 |
+|    102 | Kiran    | 45000.00 |      10 |          2 |
+|    103 | Anita    | 65000.00 |      20 |          5 |
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    107 | Ajay     | 60000.00 |      40 |          5 |
+|    108 | Ravi     | 40000.00 |      30 |          1 |
+|    110 | Arun     | 35000.00 |      30 |          1 |
++--------+----------+----------+---------+------------+
+7 rows in set (0.00 sec)
+
+mysql> select * from employee where dept_id = (select dept_id from employee where emp_name = 'vijay');
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    108 | Ravi     | 40000.00 |      30 |          1 |
+|    110 | Arun     | 35000.00 |      30 |          1 |
++--------+----------+----------+---------+------------+
+3 rows in set (0.05 sec)
+
+mysql> select * from employee where salary = (select max(salary) from employee);
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    105 | Sneha    | 80000.00 |      20 |          8 |
++--------+----------+----------+---------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where salary = (select min(salary) from employee);
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    110 | Arun     | 35000.00 |      30 |          1 |
++--------+----------+----------+---------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where dept_id = (select dept_id from employee where dept_name = 'HR' and 'IT');
+ERROR 1054 (42S22): Unknown column 'dept_name' in 'where clause'
+mysql> select * from employee where dept_id = (select dept_id, dept_name from employee where dept_name = 'HR' and 'IT');
+ERROR 1054 (42S22): Unknown column 'dept_name' in 'field list'
+mysql> select * from employee where dept_id = (select dept_id, dept_name from employee where dept_name in('HR','IT));
+    '> select * from employee where dept_id = (select dept_id, dept_name from employee where dept_name in('HR','IT'));
+    '> ^C
+mysql> select * from employee where dept_id = (select dept_id, dept_name from employee where dept_name in('HR','IT'));
+ERROR 1054 (42S22): Unknown column 'dept_name' in 'field list'
+mysql> select * from employee where dept_id = (select dept_id, dept_name from department where dept_name in('HR','IT'));
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select * from employee where dept_id = (select dept_id from department where dept_name in('HR','IT'));
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select * from employee where dept_id in(select dept_id from department where dept_name in('HR','IT'));
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    101 | Rahul    | 50000.00 |      10 |          3 |
+|    102 | Kiran    | 45000.00 |      10 |          2 |
+|    103 | Anita    | 65000.00 |      20 |          5 |
+|    104 | Priya    | 70000.00 |      20 |          6 |
+|    105 | Sneha    | 80000.00 |      20 |          8 |
++--------+----------+----------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee where dept_id in(select dept_id from department where dept_name in('Finance', 'Sales'));
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    108 | Ravi     | 40000.00 |      30 |          1 |
+|    110 | Arun     | 35000.00 |      30 |          1 |
+|    107 | Ajay     | 60000.00 |      40 |          5 |
+|    109 | Meena    | 75000.00 |      40 |          7 |
++--------+----------+----------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from employee where salary > (select max(salary) from employee);
+Empty set (0.00 sec)
+
+mysql> select * from employee where salary = (select max(salary) from employee);
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    105 | Sneha    | 80000.00 |      20 |          8 |
++--------+----------+----------+---------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from employee where salary = (select max(salary) from employee where dept_name = 'HR');
+ERROR 1054 (42S22): Unknown column 'dept_name' in 'where clause'
+mysql> select * from employee where salary > any (select dept_id from department where dept_name = 'HR');
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    101 | Rahul    | 50000.00 |      10 |          3 |
+|    102 | Kiran    | 45000.00 |      10 |          2 |
+|    103 | Anita    | 65000.00 |      20 |          5 |
+|    104 | Priya    | 70000.00 |      20 |          6 |
+|    105 | Sneha    | 80000.00 |      20 |          8 |
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    107 | Ajay     | 60000.00 |      40 |          5 |
+|    108 | Ravi     | 40000.00 |      30 |          1 |
+|    109 | Meena    | 75000.00 |      40 |          7 |
+|    110 | Arun     | 35000.00 |      30 |          1 |
++--------+----------+----------+---------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee where salary > All (select dept_id from department where dept_name = 'HR');
++--------+----------+----------+---------+------------+
+| emp_id | emp_name | salary   | dept_id | experience |
++--------+----------+----------+---------+------------+
+|    101 | Rahul    | 50000.00 |      10 |          3 |
+|    102 | Kiran    | 45000.00 |      10 |          2 |
+|    103 | Anita    | 65000.00 |      20 |          5 |
+|    104 | Priya    | 70000.00 |      20 |          6 |
+|    105 | Sneha    | 80000.00 |      20 |          8 |
+|    106 | Vijay    | 55000.00 |      30 |          4 |
+|    107 | Ajay     | 60000.00 |      40 |          5 |
+|    108 | Ravi     | 40000.00 |      30 |          1 |
+|    109 | Meena    | 75000.00 |      40 |          7 |
+|    110 | Arun     | 35000.00 |      30 |          1 |
++--------+----------+----------+---------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee where salary < any(select dept_id from department where dept_name = 'IT');
+Empty set (0.00 sec)
+
+mysql> select * from employee where salary < (select dept_id from department where dept_name = 'IT');
+Empty set (0.00 sec)
