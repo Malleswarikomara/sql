@@ -1,0 +1,4 @@
+Views:
+-----
+view is a virtual or logical table.
+view not store the data, it stores the sql queries.
