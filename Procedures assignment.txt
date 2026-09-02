@@ -1,0 +1,177 @@
+1. delimiter //
+   create procedure Empdetails()
+   begin
+   select * from employee;
+   end //
+   delimiter ;
+   
+   CALL Empdetails;
+
+2. delimiter //
+   create procedure Emp1(in Empid int)
+   begin
+   select * from employee where emp_id = Empid;
+   end //
+   delimiter ;
+   
+   Call emp1(1);
+
+3. delimiter //
+   create procedure Empdept(in DEPT varchar(30))
+   begin
+   select * from employee where department = DEPT;
+   end //
+   delimiter ;
+   
+   call Empdept('IT');
+
+4. delimiter //
+   create procedure EmpCity(in ECity varchar(30))
+   begin
+   select * from employee where city = Ecity;
+   end //
+   delimiter ; 
+   
+   Call EmpCity('Hyderabad');
+
+5. delimiter //
+   create procedure Esalary(in esal decimal(10,2))
+   begin 
+   select * from Employee where salary = esal;
+   end //
+   delimiter ;
+ 
+   call Esalary(10000);
+
+6. delimiter //
+   create procedure minmax(in max_sal decimal(10,2),in min_sal decimal(10,2))
+   begin 
+   select * from employee where salary between max_sal and min_sal;
+   end //
+   delimiter ; 
+    
+   call minmax(20000,10000);
+
+7. delimiter //
+   create procedure Esal(in EID int,out esal decimal(10,2))
+   begin 
+   select salary into esal from employee where emp_id = EID;
+   end //
+   delimiter ;
+   
+   call Esal(1,@sal);
+   select @sal;
+   
+8. delimiter //
+   create procedure Edept(in EID int,out dept varchar(30))
+   begin 
+   select department into dept from employee where emp_id = EID;
+   end //
+   delimiter ;
+   
+   call Edept(1,@de);
+   select @de;
+
+9. delimiter //
+   create procedure incsal(in esal decimal(10,2))
+   begin 
+   select salary*0.10 from Employee where salary = esal;
+   end //
+   delimiter ;
+ 
+   call incsal(10000);
+
+10. delimiter //
+    create procedure updatecity(in eid int,in ncity varchar(30))
+    begin
+    update employee set city = ncity where emp_id = eid;
+    end //
+    delimiter ;
+    
+    call updatecity(101,'hyderabad');
+
+13. DELIMITER //
+
+	CREATE PROCEDURE GetEmployeeCountByDepartment(
+	 IN dept_name VARCHAR(30),
+         OUT emp_count INT )
+    BEGIN
+    SELECT COUNT(*) INTO emp_count FROM employee WHERE department = dept_name;
+    END //
+
+    DELIMITER ;
+    
+    call GetEmployeeCountByDepartmen('IT',@count)
+    select @count;
+
+14. DELIMITER //
+
+	CREATE PROCEDURE GetEmployeeAvgSalary(
+	 IN dept_name VARCHAR(30),
+         OUT emp_salary decimal(10,2))
+    BEGIN
+    SELECT avg(salary) INTO emp_salary FROM employee WHERE department = dept_name;
+    END //
+
+    DELIMITER ;
+    
+    call GetEmployeeAvgSalary('IT',@sal);
+    select @sal;
+
+15. DELIMITER //
+
+CREATE PROCEDURE IncreaseSalary(
+    IN Eid INT,
+    IN percentage DECIMAL(5,2),
+    INOUT esal DECIMAL(10,2)
+)
+BEGIN
+    SELECT salary INTO esal FROM employee
+    WHERE emp_id = Eid;
+    SET esal = esal + (esal * percentage / 100);
+    UPDATE employee
+    SET salary = esal
+    WHERE emp_id = Eid;
+   END //
+
+   DELIMITER ; 
+  
+   SET @sal = 0;
+
+  CALL IncreaseSalary(101, 10, @sal);
+
+  SELECT @sal;
+
+17. DELIMITER //
+
+CREATE PROCEDURE GetHighestPaidEmployee(
+    IN dept_name VARCHAR(30))
+BEGIN
+    SELECT *
+    FROM employee
+    WHERE department = dept_name
+    ORDER BY salary DESC
+    LIMIT 1;
+END //
+
+DELIMITER ;
+  
+  call GetHighestPaidEmployee('IT');
+
+18.  DELIMITER //
+
+CREATE PROCEDURE GetLowestPaidEmployee(
+    IN dept_name VARCHAR(30)
+)
+BEGIN
+    SELECT *
+    FROM employee
+    WHERE department = dept_name
+    ORDER BY salary ASC
+    LIMIT 1;
+END //
+
+DELIMITER ;
+
+call GetLowestPaidEmployee('IT');
+   
