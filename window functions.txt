@@ -1,0 +1,718 @@
+window functions:
+-------------------
+it is mainly used to find the row numbers and ranks 
+it is popular function in MySQL
+ types
+row_number()
+rank()
+dense_rank()
+ntile()
+
+aggregate function:
+---------------------
+avg()
+max()
+min()
+count()
+sum()
+
+offset function:
+-------------------
+first_value()
+lag()
+lead()
+
+syntax of window function:
+----------------------------
+select columnlist, functionname over() as aliasname from tablename;
+
+in window represented by over():
+-------------------------------
+partition by: it is used to divided the data into group based on cloumn
+order by: to sort the data into a order based on column.
+
+
+
+
+
+ use da22
+Database changed
+mysql> show tables;
++----------------+
+| Tables_in_da22 |
++----------------+
+| dep            |
+| department     |
+| dept           |
+| emp            |
+| employee       |
+| employees1     |
+| employeess     |
+| products       |
++----------------+
+8 rows in set (0.01 sec)
+
+mysql> select * from employee;
+Empty set (0.06 sec)
+
+mysql> select * from employees1;
++--------+----------+------------+----------+------------+--------+
+| emp_id | emp_name | department | salary   | experience | status |
++--------+----------+------------+----------+------------+--------+
+|      1 | Ravi     | IT         | 60000.00 |          4 |      1 |
+|      2 | Anil     | HR         | 45000.00 |          3 |      2 |
+|      3 | Priya    | Finance    | 70000.00 |          6 |      4 |
+|      4 | Sneha    | IT         | 85000.00 |          7 |      3 |
+|      5 | Kiran    | Sales      | 35000.00 |          2 |      1 |
+|      6 | Arjun    | IT         | 55000.00 |          5 |      5 |
+|      7 | Divya    | HR         | 40000.00 |          4 |      2 |
+|      8 | Rahul    | Finance    | 65000.00 |          8 |      6 |
+|      9 | Meena    | Sales      | 30000.00 |          1 |      1 |
+|     10 | Suresh   | IT         | 95000.00 |         10 |      7 |
+|     11 | Pooja    | Marketing  | 50000.00 |          3 |      2 |
+|     12 | Vijay    | Finance    | 48000.00 |          4 |      4 |
+|     13 | Neha     | IT         | 72000.00 |          6 |      3 |
+|     14 | Amit     | Sales      | 42000.00 |          5 |      1 |
+|     15 | Swathi   | Marketing  | 58000.00 |          7 |      5 |
+|     16 | jay      | IT         | 50000.00 |          2 |      3 |
++--------+----------+------------+----------+------------+--------+
+16 rows in set (0.05 sec)
+
+mysql> select * from employeess;
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+| emp_id | emp_name | department | job_role   | salary   | city      | manager_id | email            | bonus    |
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+|    101 | Ravi     | IT         | Developer  | 65000.00 | Hyderabad |        201 | ravi@gmail.com   |  5000.00 |
+|    102 | Priya    | HR         | Manager    | 75000.00 | Bangalore |       NULL | priya@gmail.com  |  8000.00 |
+|    103 | Arun     | IT         | Tester     | 45000.00 | Chennai   |        201 | arun@gmail.com   |     NULL |
+|    104 | Sneha    | Finance    | Analyst    | 55000.00 | Hyderabad |        202 | sneha@gmail.com  |  4000.00 |
+|    105 | Kiran    | IT         | Developer  | 85000.00 | Pune      |        201 | kiran@gmail.com  | 10000.00 |
+|    106 | Anjali   | HR         | Recruiter  | 42000.00 | Chennai   |        202 | NULL             |  3000.00 |
+|    107 | Vijay    | Finance    | Accountant | 48000.00 | Bangalore |        202 | vijay@gmail.com  |     NULL |
+|    108 | Meena    | Sales      | Executive  | 38000.00 | Hyderabad |        203 | meena@gmail.com  |  2000.00 |
+|    109 | Rahul    | Sales      | Manager    | 72000.00 | Pune      |       NULL | rahul@gmail.com  |  7000.00 |
+|    110 | Divya    | IT         | Developer  | 60000.00 | Bangalore |        201 | NULL             |  5000.00 |
+|    111 | Suresh   | Finance    | Analyst    | 52000.00 | Chennai   |        202 | suresh@gmail.com |     NULL |
+|    112 | Pooja    | HR         | Executive  | 35000.00 | Hyderabad |        102 | pooja@gmail.com  |  1500.00 |
+|    113 | Amit     | IT         | Support    | 40000.00 | Pune      |        201 | amit@gmail.com   |     NULL |
+|    114 | Neha     | Sales      | Executive  | 46000.00 | Bangalore |        203 | NULL             |  2500.00 |
+|    115 | Raj      | IT         | Architect  | 95000.00 | Hyderabad |       NULL | raj@gmail.com    | 15000.00 |
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+15 rows in set (0.01 sec)
+
+mysql> select department,avg(salary) from employeess group by department;
++------------+--------------+
+| department | avg(salary)  |
++------------+--------------+
+| IT         | 65000.000000 |
+| HR         | 50666.666667 |
+| Finance    | 51666.666667 |
+| Sales      | 52000.000000 |
++------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department, row_number()
+    -> over(partition by department) as eROWNUM from employee_new;
+ERROR 1146 (42S02): Table 'da22.employee_new' doesn't exist
+mysql> over(partition by department) as eROWNUM from employeess;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'over(partition by department) as eROWNUM from employeess' at line 1
+mysql> select emp_id, emp_name, department, row_number()
+    -> over(partition by department) as eROWNUM from employeess;
++--------+----------+------------+---------+
+| emp_id | emp_name | department | eROWNUM |
++--------+----------+------------+---------+
+|    104 | Sneha    | Finance    |       1 |
+|    107 | Vijay    | Finance    |       2 |
+|    111 | Suresh   | Finance    |       3 |
+|    102 | Priya    | HR         |       1 |
+|    106 | Anjali   | HR         |       2 |
+|    112 | Pooja    | HR         |       3 |
+|    101 | Ravi     | IT         |       1 |
+|    103 | Arun     | IT         |       2 |
+|    105 | Kiran    | IT         |       3 |
+|    110 | Divya    | IT         |       4 |
+|    113 | Amit     | IT         |       5 |
+|    115 | Raj      | IT         |       6 |
+|    108 | Meena    | Sales      |       1 |
+|    109 | Rahul    | Sales      |       2 |
+|    114 | Neha     | Sales      |       3 |
++--------+----------+------------+---------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department, row_number()
+    -> over(order by department) as eROWNUM from employeess;
++--------+----------+------------+---------+
+| emp_id | emp_name | department | eROWNUM |
++--------+----------+------------+---------+
+|    104 | Sneha    | Finance    |       1 |
+|    107 | Vijay    | Finance    |       2 |
+|    111 | Suresh   | Finance    |       3 |
+|    102 | Priya    | HR         |       4 |
+|    106 | Anjali   | HR         |       5 |
+|    112 | Pooja    | HR         |       6 |
+|    101 | Ravi     | IT         |       7 |
+|    103 | Arun     | IT         |       8 |
+|    105 | Kiran    | IT         |       9 |
+|    110 | Divya    | IT         |      10 |
+|    113 | Amit     | IT         |      11 |
+|    115 | Raj      | IT         |      12 |
+|    108 | Meena    | Sales      |      13 |
+|    109 | Rahul    | Sales      |      14 |
+|    114 | Neha     | Sales      |      15 |
++--------+----------+------------+---------+
+15 rows in set (0.00 sec)
+
+mysql> select * from employeess;
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+| emp_id | emp_name | department | job_role   | salary   | city      | manager_id | email            | bonus    |
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+|    101 | Ravi     | IT         | Developer  | 65000.00 | Hyderabad |        201 | ravi@gmail.com   |  5000.00 |
+|    102 | Priya    | HR         | Manager    | 75000.00 | Bangalore |       NULL | priya@gmail.com  |  8000.00 |
+|    103 | Arun     | IT         | Tester     | 45000.00 | Chennai   |        201 | arun@gmail.com   |     NULL |
+|    104 | Sneha    | Finance    | Analyst    | 55000.00 | Hyderabad |        202 | sneha@gmail.com  |  4000.00 |
+|    105 | Kiran    | IT         | Developer  | 85000.00 | Pune      |        201 | kiran@gmail.com  | 10000.00 |
+|    106 | Anjali   | HR         | Recruiter  | 42000.00 | Chennai   |        202 | NULL             |  3000.00 |
+|    107 | Vijay    | Finance    | Accountant | 48000.00 | Bangalore |        202 | vijay@gmail.com  |     NULL |
+|    108 | Meena    | Sales      | Executive  | 38000.00 | Hyderabad |        203 | meena@gmail.com  |  2000.00 |
+|    109 | Rahul    | Sales      | Manager    | 72000.00 | Pune      |       NULL | rahul@gmail.com  |  7000.00 |
+|    110 | Divya    | IT         | Developer  | 60000.00 | Bangalore |        201 | NULL             |  5000.00 |
+|    111 | Suresh   | Finance    | Analyst    | 52000.00 | Chennai   |        202 | suresh@gmail.com |     NULL |
+|    112 | Pooja    | HR         | Executive  | 35000.00 | Hyderabad |        102 | pooja@gmail.com  |  1500.00 |
+|    113 | Amit     | IT         | Support    | 40000.00 | Pune      |        201 | amit@gmail.com   |     NULL |
+|    114 | Neha     | Sales      | Executive  | 46000.00 | Bangalore |        203 | NULL             |  2500.00 |
+|    115 | Raj      | IT         | Architect  | 95000.00 | Hyderabad |       NULL | raj@gmail.com    | 15000.00 |
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department, row_number()
+    -> over(order by department) as eROWNUM from employeess;
++--------+----------+------------+---------+
+| emp_id | emp_name | department | eROWNUM |
++--------+----------+------------+---------+
+|    104 | Sneha    | Finance    |       1 |
+|    107 | Vijay    | Finance    |       2 |
+|    111 | Suresh   | Finance    |       3 |
+|    102 | Priya    | HR         |       4 |
+|    106 | Anjali   | HR         |       5 |
+|    112 | Pooja    | HR         |       6 |
+|    101 | Ravi     | IT         |       7 |
+|    103 | Arun     | IT         |       8 |
+|    105 | Kiran    | IT         |       9 |
+|    110 | Divya    | IT         |      10 |
+|    113 | Amit     | IT         |      11 |
+|    115 | Raj      | IT         |      12 |
+|    108 | Meena    | Sales      |      13 |
+|    109 | Rahul    | Sales      |      14 |
+|    114 | Neha     | Sales      |      15 |
++--------+----------+------------+---------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department, row_number()
+    -> over(order by emp_id) as eROWNUM from employeess;
++--------+----------+------------+---------+
+| emp_id | emp_name | department | eROWNUM |
++--------+----------+------------+---------+
+|    101 | Ravi     | IT         |       1 |
+|    102 | Priya    | HR         |       2 |
+|    103 | Arun     | IT         |       3 |
+|    104 | Sneha    | Finance    |       4 |
+|    105 | Kiran    | IT         |       5 |
+|    106 | Anjali   | HR         |       6 |
+|    107 | Vijay    | Finance    |       7 |
+|    108 | Meena    | Sales      |       8 |
+|    109 | Rahul    | Sales      |       9 |
+|    110 | Divya    | IT         |      10 |
+|    111 | Suresh   | Finance    |      11 |
+|    112 | Pooja    | HR         |      12 |
+|    113 | Amit     | IT         |      13 |
+|    114 | Neha     | Sales      |      14 |
+|    115 | Raj      | IT         |      15 |
++--------+----------+------------+---------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,salary rank() over(order by salary desc) as ranksalary from employeess;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'rank() over(order by salary desc) as ranksalary from employeess' at line 1
+mysql> select emp_id, emp_name,salary,rank() over(order by salary desc) as ranksalary from employeess;
++--------+----------+----------+------------+
+| emp_id | emp_name | salary   | ranksalary |
++--------+----------+----------+------------+
+|    115 | Raj      | 95000.00 |          1 |
+|    105 | Kiran    | 85000.00 |          2 |
+|    102 | Priya    | 75000.00 |          3 |
+|    109 | Rahul    | 72000.00 |          4 |
+|    101 | Ravi     | 65000.00 |          5 |
+|    110 | Divya    | 60000.00 |          6 |
+|    104 | Sneha    | 55000.00 |          7 |
+|    111 | Suresh   | 52000.00 |          8 |
+|    107 | Vijay    | 48000.00 |          9 |
+|    114 | Neha     | 46000.00 |         10 |
+|    103 | Arun     | 45000.00 |         11 |
+|    106 | Anjali   | 42000.00 |         12 |
+|    113 | Amit     | 40000.00 |         13 |
+|    108 | Meena    | 38000.00 |         14 |
+|    112 | Pooja    | 35000.00 |         15 |
++--------+----------+----------+------------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,salary,dense_rank() over(order by salary desc) as ranksalary from employeess;
++--------+----------+----------+------------+
+| emp_id | emp_name | salary   | ranksalary |
++--------+----------+----------+------------+
+|    115 | Raj      | 95000.00 |          1 |
+|    105 | Kiran    | 85000.00 |          2 |
+|    102 | Priya    | 75000.00 |          3 |
+|    109 | Rahul    | 72000.00 |          4 |
+|    101 | Ravi     | 65000.00 |          5 |
+|    110 | Divya    | 60000.00 |          6 |
+|    104 | Sneha    | 55000.00 |          7 |
+|    111 | Suresh   | 52000.00 |          8 |
+|    107 | Vijay    | 48000.00 |          9 |
+|    114 | Neha     | 46000.00 |         10 |
+|    103 | Arun     | 45000.00 |         11 |
+|    106 | Anjali   | 42000.00 |         12 |
+|    113 | Amit     | 40000.00 |         13 |
+|    108 | Meena    | 38000.00 |         14 |
+|    112 | Pooja    | 35000.00 |         15 |
++--------+----------+----------+------------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,salary, avg(salary) over(partition by department) as avgsal from employeess;
++--------+----------+----------+--------------+
+| emp_id | emp_name | salary   | avgsal       |
++--------+----------+----------+--------------+
+|    104 | Sneha    | 55000.00 | 51666.666667 |
+|    107 | Vijay    | 48000.00 | 51666.666667 |
+|    111 | Suresh   | 52000.00 | 51666.666667 |
+|    102 | Priya    | 75000.00 | 50666.666667 |
+|    106 | Anjali   | 42000.00 | 50666.666667 |
+|    112 | Pooja    | 35000.00 | 50666.666667 |
+|    101 | Ravi     | 65000.00 | 65000.000000 |
+|    103 | Arun     | 45000.00 | 65000.000000 |
+|    105 | Kiran    | 85000.00 | 65000.000000 |
+|    110 | Divya    | 60000.00 | 65000.000000 |
+|    113 | Amit     | 40000.00 | 65000.000000 |
+|    115 | Raj      | 95000.00 | 65000.000000 |
+|    108 | Meena    | 38000.00 | 52000.000000 |
+|    109 | Rahul    | 72000.00 | 52000.000000 |
+|    114 | Neha     | 46000.00 | 52000.000000 |
++--------+----------+----------+--------------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,salary,department, avg(salary) over(partition by department) as avgsal from employeess;
++--------+----------+----------+------------+--------------+
+| emp_id | emp_name | salary   | department | avgsal       |
++--------+----------+----------+------------+--------------+
+|    104 | Sneha    | 55000.00 | Finance    | 51666.666667 |
+|    107 | Vijay    | 48000.00 | Finance    | 51666.666667 |
+|    111 | Suresh   | 52000.00 | Finance    | 51666.666667 |
+|    102 | Priya    | 75000.00 | HR         | 50666.666667 |
+|    106 | Anjali   | 42000.00 | HR         | 50666.666667 |
+|    112 | Pooja    | 35000.00 | HR         | 50666.666667 |
+|    101 | Ravi     | 65000.00 | IT         | 65000.000000 |
+|    103 | Arun     | 45000.00 | IT         | 65000.000000 |
+|    105 | Kiran    | 85000.00 | IT         | 65000.000000 |
+|    110 | Divya    | 60000.00 | IT         | 65000.000000 |
+|    113 | Amit     | 40000.00 | IT         | 65000.000000 |
+|    115 | Raj      | 95000.00 | IT         | 65000.000000 |
+|    108 | Meena    | 38000.00 | Sales      | 52000.000000 |
+|    109 | Rahul    | 72000.00 | Sales      | 52000.000000 |
+|    114 | Neha     | 46000.00 | Sales      | 52000.000000 |
++--------+----------+----------+------------+--------------+
+15 rows in set (0.04 sec)
+
+mysql> select emp_id, emp_name, rank() over(partition by department) order by salary as deptrank from employeess;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as deptrank from employeess' at line 1
+mysql> select emp_id, emp_name, rank() over(partition by department order by salary) as deptrank from employeess;
++--------+----------+----------+
+| emp_id | emp_name | deptrank |
++--------+----------+----------+
+|    107 | Vijay    |        1 |
+|    111 | Suresh   |        2 |
+|    104 | Sneha    |        3 |
+|    112 | Pooja    |        1 |
+|    106 | Anjali   |        2 |
+|    102 | Priya    |        3 |
+|    113 | Amit     |        1 |
+|    103 | Arun     |        2 |
+|    110 | Divya    |        3 |
+|    101 | Ravi     |        4 |
+|    105 | Kiran    |        5 |
+|    115 | Raj      |        6 |
+|    108 | Meena    |        1 |
+|    114 | Neha     |        2 |
+|    109 | Rahul    |        3 |
++--------+----------+----------+
+15 rows in set (0.04 sec)
+
+mysql> select emp_id, emp_name,department, rank() over(partition by department order by salary) as deptrank from employeess;
++--------+----------+------------+----------+
+| emp_id | emp_name | department | deptrank |
++--------+----------+------------+----------+
+|    107 | Vijay    | Finance    |        1 |
+|    111 | Suresh   | Finance    |        2 |
+|    104 | Sneha    | Finance    |        3 |
+|    112 | Pooja    | HR         |        1 |
+|    106 | Anjali   | HR         |        2 |
+|    102 | Priya    | HR         |        3 |
+|    113 | Amit     | IT         |        1 |
+|    103 | Arun     | IT         |        2 |
+|    110 | Divya    | IT         |        3 |
+|    101 | Ravi     | IT         |        4 |
+|    105 | Kiran    | IT         |        5 |
+|    115 | Raj      | IT         |        6 |
+|    108 | Meena    | Sales      |        1 |
+|    114 | Neha     | Sales      |        2 |
+|    109 | Rahul    | Sales      |        3 |
++--------+----------+------------+----------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,department, rank() over(partition by department order by salary desc) as deptrank from employeess;
++--------+----------+------------+----------+
+| emp_id | emp_name | department | deptrank |
++--------+----------+------------+----------+
+|    104 | Sneha    | Finance    |        1 |
+|    111 | Suresh   | Finance    |        2 |
+|    107 | Vijay    | Finance    |        3 |
+|    102 | Priya    | HR         |        1 |
+|    106 | Anjali   | HR         |        2 |
+|    112 | Pooja    | HR         |        3 |
+|    115 | Raj      | IT         |        1 |
+|    105 | Kiran    | IT         |        2 |
+|    101 | Ravi     | IT         |        3 |
+|    110 | Divya    | IT         |        4 |
+|    103 | Arun     | IT         |        5 |
+|    113 | Amit     | IT         |        6 |
+|    109 | Rahul    | Sales      |        1 |
+|    114 | Neha     | Sales      |        2 |
+|    108 | Meena    | Sales      |        3 |
++--------+----------+------------+----------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,department,salary, rank() over(partition by department order by salary) as deptrank from employeess;
++--------+----------+------------+----------+----------+
+| emp_id | emp_name | department | salary   | deptrank |
++--------+----------+------------+----------+----------+
+|    107 | Vijay    | Finance    | 48000.00 |        1 |
+|    111 | Suresh   | Finance    | 52000.00 |        2 |
+|    104 | Sneha    | Finance    | 55000.00 |        3 |
+|    112 | Pooja    | HR         | 35000.00 |        1 |
+|    106 | Anjali   | HR         | 42000.00 |        2 |
+|    102 | Priya    | HR         | 75000.00 |        3 |
+|    113 | Amit     | IT         | 40000.00 |        1 |
+|    103 | Arun     | IT         | 45000.00 |        2 |
+|    110 | Divya    | IT         | 60000.00 |        3 |
+|    101 | Ravi     | IT         | 65000.00 |        4 |
+|    105 | Kiran    | IT         | 85000.00 |        5 |
+|    115 | Raj      | IT         | 95000.00 |        6 |
+|    108 | Meena    | Sales      | 38000.00 |        1 |
+|    114 | Neha     | Sales      | 46000.00 |        2 |
+|    109 | Rahul    | Sales      | 72000.00 |        3 |
++--------+----------+------------+----------+----------+
+15 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department, salary, rank() over(order by salary desc as ranksal) from employeess;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as ranksal) from employeess' at line 1
+mysql> select emp_id, emp_name, department, salary, rank() over(order by salary desc) as ranksal from employeess;
++--------+----------+------------+----------+---------+
+| emp_id | emp_name | department | salary   | ranksal |
++--------+----------+------------+----------+---------+
+|    115 | Raj      | IT         | 95000.00 |       1 |
+|    105 | Kiran    | IT         | 85000.00 |       2 |
+|    102 | Priya    | HR         | 75000.00 |       3 |
+|    109 | Rahul    | Sales      | 72000.00 |       4 |
+|    101 | Ravi     | IT         | 65000.00 |       5 |
+|    110 | Divya    | IT         | 60000.00 |       6 |
+|    104 | Sneha    | Finance    | 55000.00 |       7 |
+|    111 | Suresh   | Finance    | 52000.00 |       8 |
+|    107 | Vijay    | Finance    | 48000.00 |       9 |
+|    114 | Neha     | Sales      | 46000.00 |      10 |
+|    103 | Arun     | IT         | 45000.00 |      11 |
+|    106 | Anjali   | HR         | 42000.00 |      12 |
+|    113 | Amit     | IT         | 40000.00 |      13 |
+|    108 | Meena    | Sales      | 38000.00 |      14 |
+|    112 | Pooja    | HR         | 35000.00 |      15 |
++--------+----------+------------+----------+---------+
+15 rows in set (0.00 sec)
+
+mysql> select * from (select emp_id, emp_name, department, salary, rank() over(order by salary desc) as ranksal from employeess) emp where ranksal =3;
++--------+----------+------------+----------+---------+
+| emp_id | emp_name | department | salary   | ranksal |
++--------+----------+------------+----------+---------+
+|    102 | Priya    | HR         | 75000.00 |       3 |
++--------+----------+------------+----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from (select emp_id, emp_name, department, salary, rank() over(partition by department order by salary desc ) as ranksal from employeess) emp where ranksal =3;
++--------+----------+------------+----------+---------+
+| emp_id | emp_name | department | salary   | ranksal |
++--------+----------+------------+----------+---------+
+|    107 | Vijay    | Finance    | 48000.00 |       3 |
+|    112 | Pooja    | HR         | 35000.00 |       3 |
+|    101 | Ravi     | IT         | 65000.00 |       3 |
+|    108 | Meena    | Sales      | 38000.00 |       3 |
++--------+----------+------------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from (select emp_id, emp_name, department, salary, rank() over(partition by department order by salary desc ) as ranksal from employeess) emp where ranksal =1;
++--------+----------+------------+----------+---------+
+| emp_id | emp_name | department | salary   | ranksal |
++--------+----------+------------+----------+---------+
+|    104 | Sneha    | Finance    | 55000.00 |       1 |
+|    102 | Priya    | HR         | 75000.00 |       1 |
+|    115 | Raj      | IT         | 95000.00 |       1 |
+|    109 | Rahul    | Sales      | 72000.00 |       1 |
++--------+----------+------------+----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from (select emp_id, emp_name, department, salary, rank() over(partition by department order by salary desc ) as ranksal from employeess) emp where ranksal>=2;
++--------+----------+------------+----------+---------+
+| emp_id | emp_name | department | salary   | ranksal |
++--------+----------+------------+----------+---------+
+|    111 | Suresh   | Finance    | 52000.00 |       2 |
+|    107 | Vijay    | Finance    | 48000.00 |       3 |
+|    106 | Anjali   | HR         | 42000.00 |       2 |
+|    112 | Pooja    | HR         | 35000.00 |       3 |
+|    105 | Kiran    | IT         | 85000.00 |       2 |
+|    101 | Ravi     | IT         | 65000.00 |       3 |
+|    110 | Divya    | IT         | 60000.00 |       4 |
+|    103 | Arun     | IT         | 45000.00 |       5 |
+|    113 | Amit     | IT         | 40000.00 |       6 |
+|    114 | Neha     | Sales      | 46000.00 |       2 |
+|    108 | Meena    | Sales      | 38000.00 |       3 |
++--------+----------+------------+----------+---------+
+11 rows in set (0.00 sec)
+
+mysql> select * from (select emp_id, emp_name, department, salary, rank() over(partition by department order by salary desc ) as ranksal from employeess) emp where ranksal<=2;
++--------+----------+------------+----------+---------+
+| emp_id | emp_name | department | salary   | ranksal |
++--------+----------+------------+----------+---------+
+|    104 | Sneha    | Finance    | 55000.00 |       1 |
+|    111 | Suresh   | Finance    | 52000.00 |       2 |
+|    102 | Priya    | HR         | 75000.00 |       1 |
+|    106 | Anjali   | HR         | 42000.00 |       2 |
+|    115 | Raj      | IT         | 95000.00 |       1 |
+|    105 | Kiran    | IT         | 85000.00 |       2 |
+|    109 | Rahul    | Sales      | 72000.00 |       1 |
+|    114 | Neha     | Sales      | 46000.00 |       2 |
++--------+----------+------------+----------+---------+
+8 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, row_number() over(order by emp_id) as emprow from employee where emprow =9;
+ERROR 1054 (42S22): Unknown column 'emp_id' in 'field list'
+mysql> select emp_id, emp_name, row_number() over(order by emp_id) as emprow from employeess where emprow =9;
+ERROR 1054 (42S22): Unknown column 'emprow' in 'where clause'
+mysql> select * from (select emp_id, emp_name, row_number() over(order by emp_id) as emprow from employeess) where emprow =9;
+ERROR 1248 (42000): Every derived table must have its own alias
+mysql> select * from (select emp_id, emp_name, row_number() over(order by emp_id as emprow) from employeess) where emprow =9;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'as emprow) from employeess) where emprow =9' at line 1
+mysql> select * from (select emp_id, emp_name, row_number() over(order by emp_id) as emprow from employeess) as emp where emprow =9;
++--------+----------+--------+
+| emp_id | emp_name | emprow |
++--------+----------+--------+
+|    109 | Rahul    |      9 |
++--------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from employeess;
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+| emp_id | emp_name | department | job_role   | salary   | city      | manager_id | email            | bonus    |
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+|    101 | Ravi     | IT         | Developer  | 65000.00 | Hyderabad |        201 | ravi@gmail.com   |  5000.00 |
+|    102 | Priya    | HR         | Manager    | 75000.00 | Bangalore |       NULL | priya@gmail.com  |  8000.00 |
+|    103 | Arun     | IT         | Tester     | 45000.00 | Chennai   |        201 | arun@gmail.com   |     NULL |
+|    104 | Sneha    | Finance    | Analyst    | 55000.00 | Hyderabad |        202 | sneha@gmail.com  |  4000.00 |
+|    105 | Kiran    | IT         | Developer  | 85000.00 | Pune      |        201 | kiran@gmail.com  | 10000.00 |
+|    106 | Anjali   | HR         | Recruiter  | 42000.00 | Chennai   |        202 | NULL             |  3000.00 |
+|    107 | Vijay    | Finance    | Accountant | 48000.00 | Bangalore |        202 | vijay@gmail.com  |     NULL |
+|    108 | Meena    | Sales      | Executive  | 38000.00 | Hyderabad |        203 | meena@gmail.com  |  2000.00 |
+|    109 | Rahul    | Sales      | Manager    | 72000.00 | Pune      |       NULL | rahul@gmail.com  |  7000.00 |
+|    110 | Divya    | IT         | Developer  | 60000.00 | Bangalore |        201 | NULL             |  5000.00 |
+|    111 | Suresh   | Finance    | Analyst    | 52000.00 | Chennai   |        202 | suresh@gmail.com |     NULL |
+|    112 | Pooja    | HR         | Executive  | 35000.00 | Hyderabad |        102 | pooja@gmail.com  |  1500.00 |
+|    113 | Amit     | IT         | Support    | 40000.00 | Pune      |        201 | amit@gmail.com   |     NULL |
+|    114 | Neha     | Sales      | Executive  | 46000.00 | Bangalore |        203 | NULL             |  2500.00 |
+|    115 | Raj      | IT         | Architect  | 95000.00 | Hyderabad |       NULL | raj@gmail.com    | 15000.00 |
++--------+----------+------------+------------+----------+-----------+------------+------------------+----------+
+15 rows in set (0.00 sec)
+
+mysql> CREATE TABLE employees (
+    ->     emp_id INT,
+    ->     emp_name VARCHAR(50),
+    ->     department VARCHAR(30),
+    ->     salary INT,
+    ->     hire_date DATE,
+    ->     city VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO employees VALUES
+    -> (101, 'Ravi',   'IT',      60000, '2021-01-15', 'Hyderabad'),
+    -> (102, 'Priya',  'IT',      80000, '2020-06-10', 'Bangalore'),
+    -> (103, 'Kiran',  'IT',      75000, '2022-03-20', 'Hyderabad'),
+    -> (104, 'Anu',    'HR',      55000, '2021-08-12', 'Chennai'),
+    -> (105, 'Rahul',  'HR',      65000, '2019-04-18', 'Hyderabad'),
+    -> (106, 'Sneha',  'HR',      65000, '2020-11-25', 'Bangalore'),
+    -> (107, 'Arjun',  'Sales',   70000, '2021-02-14', 'Chennai'),
+    -> (108, 'Meena',  'Sales',   90000, '2018-09-30', 'Hyderabad'),
+    -> (109, 'Vijay',  'Sales',   70000, '2022-07-05', 'Bangalore'),
+    -> (110, 'Neha',   'Finance', 85000, '2019-12-10', 'Chennai'),
+    -> (111, 'Suresh', 'Finance', 75000, '2021-05-22', 'Hyderabad'),
+    -> (112, 'Pooja',  'Finance', 85000, '2020-02-17', 'Bangalore');
+Query OK, 12 rows affected (0.01 sec)
+Records: 12  Duplicates: 0  Warnings: 0
+
+mysql> select emp_id, emp_name, department, row_number()
+    ->  over(order by salary asc) as eROWNUM from employees;
++--------+----------+------------+---------+
+| emp_id | emp_name | department | eROWNUM |
++--------+----------+------------+---------+
+|    104 | Anu      | HR         |       1 |
+|    101 | Ravi     | IT         |       2 |
+|    105 | Rahul    | HR         |       3 |
+|    106 | Sneha    | HR         |       4 |
+|    107 | Arjun    | Sales      |       5 |
+|    109 | Vijay    | Sales      |       6 |
+|    103 | Kiran    | IT         |       7 |
+|    111 | Suresh   | Finance    |       8 |
+|    102 | Priya    | IT         |       9 |
+|    110 | Neha     | Finance    |      10 |
+|    112 | Pooja    | Finance    |      11 |
+|    108 | Meena    | Sales      |      12 |
++--------+----------+------------+---------+
+12 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department,salary, row_number()
+    ->  over(order by salary asc) as eROWNUM from employees;
++--------+----------+------------+--------+---------+
+| emp_id | emp_name | department | salary | eROWNUM |
++--------+----------+------------+--------+---------+
+|    104 | Anu      | HR         |  55000 |       1 |
+|    101 | Ravi     | IT         |  60000 |       2 |
+|    105 | Rahul    | HR         |  65000 |       3 |
+|    106 | Sneha    | HR         |  65000 |       4 |
+|    107 | Arjun    | Sales      |  70000 |       5 |
+|    109 | Vijay    | Sales      |  70000 |       6 |
+|    103 | Kiran    | IT         |  75000 |       7 |
+|    111 | Suresh   | Finance    |  75000 |       8 |
+|    102 | Priya    | IT         |  80000 |       9 |
+|    110 | Neha     | Finance    |  85000 |      10 |
+|    112 | Pooja    | Finance    |  85000 |      11 |
+|    108 | Meena    | Sales      |  90000 |      12 |
++--------+----------+------------+--------+---------+
+12 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department,salary, row_number()
+    ->  over(order by salary desc) as eROWNUM from employees;
++--------+----------+------------+--------+---------+
+| emp_id | emp_name | department | salary | eROWNUM |
++--------+----------+------------+--------+---------+
+|    108 | Meena    | Sales      |  90000 |       1 |
+|    110 | Neha     | Finance    |  85000 |       2 |
+|    112 | Pooja    | Finance    |  85000 |       3 |
+|    102 | Priya    | IT         |  80000 |       4 |
+|    103 | Kiran    | IT         |  75000 |       5 |
+|    111 | Suresh   | Finance    |  75000 |       6 |
+|    107 | Arjun    | Sales      |  70000 |       7 |
+|    109 | Vijay    | Sales      |  70000 |       8 |
+|    105 | Rahul    | HR         |  65000 |       9 |
+|    106 | Sneha    | HR         |  65000 |      10 |
+|    101 | Ravi     | IT         |  60000 |      11 |
+|    104 | Anu      | HR         |  55000 |      12 |
++--------+----------+------------+--------+---------+
+12 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name, department,salary, row_number()
+    ->  over(partition by department) as edept from employees;
++--------+----------+------------+--------+-------+
+| emp_id | emp_name | department | salary | edept |
++--------+----------+------------+--------+-------+
+|    110 | Neha     | Finance    |  85000 |     1 |
+|    111 | Suresh   | Finance    |  75000 |     2 |
+|    112 | Pooja    | Finance    |  85000 |     3 |
+|    104 | Anu      | HR         |  55000 |     1 |
+|    105 | Rahul    | HR         |  65000 |     2 |
+|    106 | Sneha    | HR         |  65000 |     3 |
+|    101 | Ravi     | IT         |  60000 |     1 |
+|    102 | Priya    | IT         |  80000 |     2 |
+|    103 | Kiran    | IT         |  75000 |     3 |
+|    107 | Arjun    | Sales      |  70000 |     1 |
+|    108 | Meena    | Sales      |  90000 |     2 |
+|    109 | Vijay    | Sales      |  70000 |     3 |
++--------+----------+------------+--------+-------+
+12 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,department,salary, rank() over(partition by department order by salary desc) as deptrank from employees;
++--------+----------+------------+--------+----------+
+| emp_id | emp_name | department | salary | deptrank |
++--------+----------+------------+--------+----------+
+|    110 | Neha     | Finance    |  85000 |        1 |
+|    112 | Pooja    | Finance    |  85000 |        1 |
+|    111 | Suresh   | Finance    |  75000 |        3 |
+|    105 | Rahul    | HR         |  65000 |        1 |
+|    106 | Sneha    | HR         |  65000 |        1 |
+|    104 | Anu      | HR         |  55000 |        3 |
+|    102 | Priya    | IT         |  80000 |        1 |
+|    103 | Kiran    | IT         |  75000 |        2 |
+|    101 | Ravi     | IT         |  60000 |        3 |
+|    108 | Meena    | Sales      |  90000 |        1 |
+|    107 | Arjun    | Sales      |  70000 |        2 |
+|    109 | Vijay    | Sales      |  70000 |        2 |
++--------+----------+------------+--------+----------+
+12 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,department,salary, dense_rank() over(partition by department order by salary desc) as deptrank from employees;
++--------+----------+------------+--------+----------+
+| emp_id | emp_name | department | salary | deptrank |
++--------+----------+------------+--------+----------+
+|    110 | Neha     | Finance    |  85000 |        1 |
+|    112 | Pooja    | Finance    |  85000 |        1 |
+|    111 | Suresh   | Finance    |  75000 |        2 |
+|    105 | Rahul    | HR         |  65000 |        1 |
+|    106 | Sneha    | HR         |  65000 |        1 |
+|    104 | Anu      | HR         |  55000 |        2 |
+|    102 | Priya    | IT         |  80000 |        1 |
+|    103 | Kiran    | IT         |  75000 |        2 |
+|    101 | Ravi     | IT         |  60000 |        3 |
+|    108 | Meena    | Sales      |  90000 |        1 |
+|    107 | Arjun    | Sales      |  70000 |        2 |
+|    109 | Vijay    | Sales      |  70000 |        2 |
++--------+----------+------------+--------+----------+
+12 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,department,salary, dense_rank() over(order by salary desc) as deptrank from employees;
++--------+----------+------------+--------+----------+
+| emp_id | emp_name | department | salary | deptrank |
++--------+----------+------------+--------+----------+
+|    108 | Meena    | Sales      |  90000 |        1 |
+|    110 | Neha     | Finance    |  85000 |        2 |
+|    112 | Pooja    | Finance    |  85000 |        2 |
+|    102 | Priya    | IT         |  80000 |        3 |
+|    103 | Kiran    | IT         |  75000 |        4 |
+|    111 | Suresh   | Finance    |  75000 |        4 |
+|    107 | Arjun    | Sales      |  70000 |        5 |
+|    109 | Vijay    | Sales      |  70000 |        5 |
+|    105 | Rahul    | HR         |  65000 |        6 |
+|    106 | Sneha    | HR         |  65000 |        6 |
+|    101 | Ravi     | IT         |  60000 |        7 |
+|    104 | Anu      | HR         |  55000 |        8 |
++--------+----------+------------+--------+----------+
+12 rows in set (0.00 sec)
+
+mysql> select emp_id, emp_name,department,salary, rank() over(order by salary desc) as deptrank from employees;
++--------+----------+------------+--------+----------+
+| emp_id | emp_name | department | salary | deptrank |
++--------+----------+------------+--------+----------+
+|    108 | Meena    | Sales      |  90000 |        1 |
+|    110 | Neha     | Finance    |  85000 |        2 |
+|    112 | Pooja    | Finance    |  85000 |        2 |
+|    102 | Priya    | IT         |  80000 |        4 |
+|    103 | Kiran    | IT         |  75000 |        5 |
+|    111 | Suresh   | Finance    |  75000 |        5 |
+|    107 | Arjun    | Sales      |  70000 |        7 |
+|    109 | Vijay    | Sales      |  70000 |        7 |
+|    105 | Rahul    | HR         |  65000 |        9 |
+|    106 | Sneha    | HR         |  65000 |        9 |
+|    101 | Ravi     | IT         |  60000 |       11 |
+|    104 | Anu      | HR         |  55000 |       12 |
++--------+----------+------------+--------+----------+
+12 rows in set (0.00 sec)
