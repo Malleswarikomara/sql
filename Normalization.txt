@@ -1,0 +1,82 @@
+Normalization:
+it is way to process & organizing the data into a tables in database.
+
+Advantages of normalization:
+--------------------------
+to reduce the data redudency.
+to avoid the duplicate values into a column
+to maintain data consistency
+easy to write insert, update,delete queries.
+
+normalization is work through using normal forms.
+1NF
+2NF
+3NF
+
+
+1NF:
+----
+first normal form
+in table satisfy the 1nf, when every column contains atomic values(single values).
+
+
+2NF:
+----
+second normal form.
+the table is satisfied in 2nf, when the table satisfy 1nf and remove the partial dependency.
+1nf + no partial dependency.
+
+
+3NF:
+----
+third normal form
+2nf + no transtive dependency
+
+composite key:
+-------------
+In one table combine the more than one column identifies uniquely.
+
+sid did marks depart_name
+
+101  2
+102  3
+103  2
+
+create table emp(sid int, did int, marks int, depart_name varchar(20), primary key(sid,did);
+
+
+
+candidate key:
+--------------
+The column contains unique values.
+In one table contains more than one candidate key.
+In one candidate key represented by primary key.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
